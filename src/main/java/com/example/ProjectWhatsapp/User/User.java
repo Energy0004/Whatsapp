@@ -1,88 +1,31 @@
 package com.example.ProjectWhatsapp.User;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
-
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "appuser")
 public class User {
     @Id
-    @SequenceGenerator(
-            name = "user_id_sequence",
-            sequenceName = "user_id_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "user_id_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int userId;
     private String username;
     private String password;
     private String phoneNumber;
     private LocalDate lastLogin;
     private String status;
-    public User(int userId, String username, String password, String phoneNumber, LocalDate lastLogin, String status) {
-        this.userId = userId;
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.lastLogin = lastLogin;
-        this.status = status;
-    }
+
     public User(String username, String password, String phoneNumber, LocalDate lastLogin, String status) {
         this.username = username;
         this.password = password;
         this.phoneNumber = phoneNumber;
         this.lastLogin = lastLogin;
-        this.status = status;
-    }
-    public int getUserId() {
-        return userId;
-    }
-
-    public void setUserId(int userId) {
-        this.userId = userId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public LocalDate getLastLogin() {
-        return lastLogin;
-    }
-
-    public void setLastLogin(LocalDate lastLogin) {
-        this.lastLogin = lastLogin;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
         this.status = status;
     }
     @Override
