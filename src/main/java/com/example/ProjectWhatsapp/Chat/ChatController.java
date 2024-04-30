@@ -1,39 +1,32 @@
 package com.example.ProjectWhatsapp.Chat;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
-import java.time.Month;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/chat")
+@RequestMapping("/chat")
+@AllArgsConstructor
 public class ChatController {
     @Autowired
     private ChatRepository chatRepository;
+    private ChatService chatService;
     @GetMapping
     public List<Chat> getChat(){
-//        return charRepository.findAll();
-        return List.of(new Chat(1,"name",false));
+        return chatRepository.findAll();
+//        return List.of(new Chat(1,"name",false));
     }
-//    record NewCustomerRequest(
-//            String name,
-//            String email,
-//            Integer age
-//    ){}
-//    @PostMapping
-//    public String addCustomer(@RequestBody NewCustomerRequest request){
-//        Customer customer = new Customer();
-//        customer.setName(request.name());
-//        customer.setEmail(request.email());
-//        customer.setAge(request.age());
-//        customerRepository.save(customer);
-//        return "Customer saved successfully";
-//    }
-//    @DeleteMapping("{customerId}")
-//    public String deleteCustomer(@PathVariable("customerId") Integer id){
-//        customerRepository.deleteById(id);
-//        return "Customer deleted successfully";
-//    }
+    @PostMapping
+    public ResponseEntity<ChatDto> addChat(@RequestBody ChatDto chatDto){
+        ChatDto savedChat = chatService.addChat(chatDto);
+        return new ResponseEntity<>(savedChat, HttpStatus.CREATED);
+//      {
+//          "chatName": "Wowo",
+//          "isGroupChat": false
+//      }
+    }
 }

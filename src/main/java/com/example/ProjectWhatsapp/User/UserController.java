@@ -1,11 +1,8 @@
 package com.example.ProjectWhatsapp.User;
 
-import com.example.ProjectWhatsapp.UserDto;
-import com.example.ProjectWhatsapp.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,6 +24,13 @@ public class UserController {
     public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto){
         UserDto savedUser = userService.addUser(userDto);
         return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
+        //{
+        //    "username": "Alish",
+        //    "password": "pps",
+        //    "phoneNumber": "993933",
+        //    "lastLogin": "2020-11-11",
+        //    "status": "active"
+        //}
     }
 //    @PostMapping
 //    public String createUser(@RequestBody User user) throws Exception {

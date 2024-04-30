@@ -1,7 +1,5 @@
-package com.example.ProjectWhatsapp;
+package com.example.ProjectWhatsapp.User;
 
-import com.example.ProjectWhatsapp.User.User;
-import com.example.ProjectWhatsapp.User.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

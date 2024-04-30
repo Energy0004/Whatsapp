@@ -1,56 +1,27 @@
 package com.example.ProjectWhatsapp.Chat;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Objects;
-
+@Setter
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
+@Table(name = "chat")
 public class Chat {
     @Id
-    @SequenceGenerator(
-            name = "chat_id_sequence",
-            sequenceName = "chat_id_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "chat_id_sequence"
-    )
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int chatId;
     private String chatName;
     private boolean isGroupChat;
-    public Chat(int chatId, String chatName, boolean isGroupChat) {
-        this.chatId = chatId;
-        this.chatName = chatName;
-        this.isGroupChat = isGroupChat;
-    }
     public Chat(String chatName, boolean isGroupChat) {
         this.chatName = chatName;
         this.isGroupChat = isGroupChat;
-    }
-
-    public int getChatId() {
-        return chatId;
-    }
-
-    public void setChatId(int chatId) {
-        this.chatId = chatId;
-    }
-
-    public String getChatName() {
-        return chatName;
-    }
-
-    public void setChatName(String chatName) {
-        this.chatName = chatName;
-    }
-
-    public boolean isGroupChat() {
-        return isGroupChat;
-    }
-
-    public void setGroupChat(boolean groupChat) {
-        isGroupChat = groupChat;
     }
 
     @Override
