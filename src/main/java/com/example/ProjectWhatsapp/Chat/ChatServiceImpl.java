@@ -1,5 +1,6 @@
 package com.example.ProjectWhatsapp.Chat;
 
+import com.example.ProjectWhatsapp.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +21,10 @@ public class ChatServiceImpl implements ChatService{
         savedChatDto.setChatName(savedChat.getChatName());
         savedChatDto.setGroupChat(savedChat.isGroupChat());
         return savedChatDto;
+    }
+    @Override
+    public void deleteChat(int chatId) {
+        Chat chat = chatRepository.findById(chatId).orElseThrow(() -> new ResourceNotFoundException("Chat not found with id : " + chatId));
+        chatRepository.deleteById(chatId);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.ProjectWhatsapp.User;
 
+import com.example.ProjectWhatsapp.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,5 +27,10 @@ public class UserServiceImpl implements UserService{
         savedUserDto.setLastLogin(savedUser.getLastLogin());
         savedUserDto.setStatus(savedUser.getStatus());
         return savedUserDto;
+    }
+    @Override
+    public void deleteUser(int userId) {
+        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id : " + userId));
+        userRepository.deleteById(userId);
     }
 }

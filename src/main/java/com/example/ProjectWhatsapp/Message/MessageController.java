@@ -24,11 +24,16 @@ public class MessageController {
     public ResponseEntity<MessageDto> addMessage(@RequestBody MessageDto messageDto){
         MessageDto savedMessage = messageService.addMessage(messageDto);
         return new ResponseEntity<>(savedMessage, HttpStatus.CREATED);
-//        {
-//            "chatId": 52,
-//            "content": "Hello",
-//            "senderId": 52,
-//            "timeStamp": "2024-04-30"
-//        }
+// {
+//     "chatId": 52,
+//     "content": "Hello",
+//     "senderId": 52,
+//     "timeStamp": "2024-04-30"
+// }
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteMessage(@PathVariable("id") int messageId){
+        messageService.deleteMessage(messageId);
+        return ResponseEntity.ok("Message deleted successfully!.");
     }
 }

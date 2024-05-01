@@ -24,9 +24,14 @@ public class ChatController {
     public ResponseEntity<ChatDto> addChat(@RequestBody ChatDto chatDto){
         ChatDto savedChat = chatService.addChat(chatDto);
         return new ResponseEntity<>(savedChat, HttpStatus.CREATED);
-//      {
-//          "chatName": "Wowo",
-//          "isGroupChat": false
-//      }
+// {
+//     "chatName": "Wowo",
+//     "isGroupChat": false
+// }
+    }
+    @DeleteMapping("{id}")
+    public ResponseEntity<String> deleteChat(@PathVariable("id") int chatId){
+        chatService.deleteChat(chatId);
+        return ResponseEntity.ok("Chat deleted successfully!.");
     }
 }

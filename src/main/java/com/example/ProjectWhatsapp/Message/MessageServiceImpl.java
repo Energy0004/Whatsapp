@@ -1,5 +1,7 @@
 package com.example.ProjectWhatsapp.Message;
 
+import com.example.ProjectWhatsapp.Participant.Participant;
+import com.example.ProjectWhatsapp.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,5 +26,11 @@ public class MessageServiceImpl implements MessageService{
         savedMessageDto.setSenderId(savedMessage.getSenderId());
         savedMessageDto.setChatId(savedMessage.getChatId());
         return savedMessageDto;
+    }
+
+    @Override
+    public void deleteMessage(int messageId) {
+        Message message = messageRepository.findById(messageId).orElseThrow(() -> new ResourceNotFoundException("Message not found with id : " + messageId));
+        messageRepository.deleteById(messageId);
     }
 }
