@@ -5,6 +5,8 @@ import com.example.ProjectWhatsapp.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class MessageServiceImpl implements MessageService{
@@ -32,5 +34,21 @@ public class MessageServiceImpl implements MessageService{
     public void deleteMessage(int messageId) {
         Message message = messageRepository.findById(messageId).orElseThrow(() -> new ResourceNotFoundException("Message not found with id : " + messageId));
         messageRepository.deleteById(messageId);
+    }
+
+    @Override
+    public List<Message> getMessagesByChatId(int chatId) {
+        return messageRepository.getMessagesByChatId(chatId);
+    }
+
+    @Override
+    public Message sendMessage(MessageDto messageDto) {
+        Message message = new Message();
+        message.setChatId(messageDto.getChatId());
+        message.setContent(messageDto.getContent());
+        message.setTimeStamp(messageDto.getTimeStamp());
+        message.setSenderId(messageDto.getSenderId());
+        messageRepository.save(message);
+        return message;
     }
 }
