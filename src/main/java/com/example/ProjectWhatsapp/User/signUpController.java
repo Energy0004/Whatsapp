@@ -4,6 +4,8 @@ import com.example.ProjectWhatsapp.AuthResponse;
 import com.example.ProjectWhatsapp.CustomUserService;
 import com.example.ProjectWhatsapp.LoginRequest;
 import com.example.ProjectWhatsapp.TokenProvider;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import jdk.jshell.spi.ExecutionControl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,15 +23,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class signUpController {
+//    "http://localhost:8080/api/auth/signup"
+//    "http://localhost:8080/api/auth/signin"
     @Autowired
     private PasswordEncoder passwordEncoder;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private TokenProvider tokenProvider;
-    private String temp;
     @Autowired
     private CustomUserService customUserService;
 
@@ -40,14 +43,26 @@ public class signUpController {
     }
 
     @PostMapping("/signup")
-    public void signUp(@RequestBody UserDto userDto) throws Exception {
-        String phoneNumber = userDto.getPhoneNumber();
-//        List<User> list = this.userRepository.searchUse(phoneNumber);
-        User isUser = this.userRepository.findByPhoneNumber(phoneNumber);
+    public ResponseEntity<AuthResponse> signUp(@RequestBody UserDto userDto) throws Exception {
+        String username = userDto.getUsername();
+        User isUser = this.userRepository.findByUsername(username);
         if (isUser != null) {
-            throw new Exception("PhoneNumber is used with another account");
+            throw new Exception("Username is used with another account");
         }
-        temp = phoneNumber;
+        User user = new User();
+        user.setUsername(username);
+        // createdUser.setPassword(this.passwordEncoder.encode(password));
+        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
+//        user.setPassword(userDto.getPassword());
+        user.setLastLogin(userDto.getLastLogin());
+        user.setStatus(userDto.getStatus());
+        userRepository.save(user);
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(username, userDto.getPassword());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = this.tokenProvider.generateToken(authentication);
+        AuthResponse response = new AuthResponse(jwt, true);
+        return new ResponseEntity<AuthResponse>(response, HttpStatus.ACCEPTED);
 //        {
 //            "username": "Alish",
 //            "password": "pps",
@@ -56,42 +71,15 @@ public class signUpController {
 //            "status": "active"
 //        }
     }
-    @PostMapping("/signup2")
-    public ResponseEntity<AuthResponse> signUp2(@RequestBody UserDto userDto) throws Exception {
-        User user = new User();
-        user.setUsername(userDto.getUsername());
-        // createdUser.setPassword(this.passwordEncoder.encode(password));
-        user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
-//        user.setPassword(userDto.getPassword());
-        user.setPhoneNumber(temp);
-        user.setLastLogin(userDto.getLastLogin());
-        user.setStatus(userDto.getStatus());
-        userRepository.save(user);
-
-        Authentication authentication = new UsernamePasswordAuthenticationToken(temp, userDto.getPassword());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt = this.tokenProvider.generateToken(authentication);
-        AuthResponse response = new AuthResponse(jwt, true);
-        return new ResponseEntity<AuthResponse>(response, HttpStatus.ACCEPTED);
-//        UserDto savedUserDto = new UserDto();
-//        savedUserDto.setUserId(savedUser.getUserId());
-//        savedUserDto.setUsername(savedUser.getUsername());
-//        savedUserDto.setPassword(savedUser.getPassword());
-//        savedUserDto.setPhoneNumber(savedUser.getPhoneNumber());
-//        savedUserDto.setLastLogin(savedUser.getLastLogin());
-//        savedUserDto.setStatus(savedUser.getStatus());
-
-//        return new ResponseEntity<>(savedUser, HttpStatus.CREATED);
-    }
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) {
 
-        String phoneNumber = request.getPhoneNumber();
+        String username = request.getUsername();
         String password = request.getPassword();
-        System.out.println(phoneNumber);
+        System.out.println(username);
         System.out.println(password);
 
-        Authentication authentication = this.authenticate(phoneNumber, password);
+        Authentication authentication = this.authenticate(username, password);
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = this.tokenProvider.generateToken(authentication);

@@ -1,5 +1,11 @@
 package com.example.ProjectWhatsapp.Message;
 
+import com.example.ProjectWhatsapp.Chat.Chat;
+import com.example.ProjectWhatsapp.Chat.ChatServiceImpl;
+import com.example.ProjectWhatsapp.User.User;
+import com.example.ProjectWhatsapp.User.UserDto;
+import com.example.ProjectWhatsapp.User.UserService;
+import com.example.ProjectWhatsapp.User.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +20,13 @@ import java.util.List;
 public class MessageController {
     @Autowired
     private MessageRepository messageRepository;
+    @Autowired
     private MessageService messageService;
+    @Autowired
+    private UserServiceImpl userService;
+    @Autowired
+    private ChatServiceImpl chatService;
+
     @GetMapping
     public List<Message> getMessages(){
         return messageRepository.findAll();

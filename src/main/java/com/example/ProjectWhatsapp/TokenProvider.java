@@ -16,17 +16,16 @@ public class TokenProvider {
     public String generateToken(Authentication authentication) {
         String jwt = Jwts.builder().setIssuer("Dipen")
                 .setIssuedAt(new Date()).setExpiration(new Date(new Date().getTime() + 86400000))
-                .claim("phoneNumber", authentication.getName())
+                .claim("username", authentication.getName())
                 .signWith(key)
                 .compact();
         return jwt;
     }
-    public String getEmailFromToken(String jwt) {
+    public String getUsernameFromToken(String jwt) {
         jwt = jwt.substring(7);
         Claims claim = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jwt).getBody();
 
         String username = String.valueOf(claim.get("username"));
         return username;
     }
-
 }

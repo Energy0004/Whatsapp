@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
-    public User findByPhoneNumber(String phoneNumber);
-//    @Query("select u from User u where u.username like %:query% or u.phoneNumber like %:query%")
+    public User findByUsername(String username);
+//    @Query("select u from User u where u.username like %:query%")
 //    public List<User> searchUser(@Param("query") String query);
 }
