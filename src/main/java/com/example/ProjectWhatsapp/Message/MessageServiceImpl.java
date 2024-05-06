@@ -51,4 +51,9 @@ public class MessageServiceImpl implements MessageService{
         messageRepository.save(message);
         return message;
     }
+
+    @Override
+    public Message findMessageByMessageId(int messageId) {
+        return messageRepository.findById(messageId).orElseThrow(() -> new ResourceNotFoundException("Message not found with id : " + messageId));
+    }
 }

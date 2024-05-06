@@ -46,20 +46,31 @@ public class MessageController {
 //     "timeStamp": "2024-04-30"
 // }
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteMessage(@PathVariable("id") int messageId){
-        messageService.deleteMessage(messageId);
-        return ResponseEntity.ok("Message deleted successfully!.");
-    }
+//    @DeleteMapping("{id}")
+//    public ResponseEntity<String> deleteMessage(@PathVariable("id") int messageId){
+//        messageService.deleteMessage(messageId);
+//        return ResponseEntity.ok("Message deleted successfully!.");
+//    }
     @PostMapping("/chat")
     public List<Message> getMessage(@RequestBody ChatDto chatDto) {
         return messageService.getMessagesByChatId(chatDto.getChatId());
     }
     @PostMapping("/send")
-    public ResponseEntity<Message> sendMessage(@RequestBody MessageDto messageDto , @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<Message> sendMessage(@RequestBody MessageDto messageDto, @RequestHeader("Authorization") String jwt) throws Exception {
         messageDto.setSenderId(userService.findUserProfile(jwt).getUserId());
         messageDto.setTimeStamp(LocalDate.now());
-        Message saved =  messageService.sendMessage(messageDto);
-        return new ResponseEntity<>(saved,HttpStatus.OK);
+        Message saved = messageService.sendMessage(messageDto);
+        return new ResponseEntity<>(saved, HttpStatus.OK);
+    }
+    @DeleteMapping("/cancel/send")
+    public ResponseEntity<String> cancelSendMessage(@RequestBody MessageDto messageDto, @RequestHeader("Authorization") String jwt) throws Exception {
+        User user = userService.findUserProfile(jwt);
+        Message message = messageService.findMessageByMessageId(messageDto.getMessageId());
+        if(user.getUserId() == message.getSenderId()){
+            messageService.deleteMessage(message.getMessageId());
+        }else throw new Exception("You can not delete someone's message");
+        return new ResponseEntity<>("Message deleted successfully!", HttpStatus.OK);
+//        List<Message> listOfMessages = messageService.getMessagesByChatId(messageDto.getChatId());
+//        return new ResponseEntity<>(messageService.getMessagesByChatId(), HttpStatus.OK);
     }
 }

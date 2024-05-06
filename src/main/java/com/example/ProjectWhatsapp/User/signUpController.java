@@ -4,10 +4,7 @@ import com.example.ProjectWhatsapp.AuthResponse;
 import com.example.ProjectWhatsapp.CustomUserService;
 import com.example.ProjectWhatsapp.LoginRequest;
 import com.example.ProjectWhatsapp.TokenProvider;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import jdk.jshell.spi.ExecutionControl;
-import lombok.AllArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,14 +13,14 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class signUpController {
 //    "http://localhost:8080/api/auth/signup"
 //    "http://localhost:8080/api/auth/signin"
@@ -51,10 +48,9 @@ public class signUpController {
         }
         User user = new User();
         user.setUsername(username);
-        // createdUser.setPassword(this.passwordEncoder.encode(password));
         user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));
 //        user.setPassword(userDto.getPassword());
-        user.setLastLogin(userDto.getLastLogin());
+        user.setLastLogin(LocalDate.now());
         user.setStatus(userDto.getStatus());
         userRepository.save(user);
 
@@ -73,7 +69,6 @@ public class signUpController {
     }
     @PostMapping("/signin")
     public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) {
-
         String username = request.getUsername();
         String password = request.getPassword();
         System.out.println(username);
@@ -83,6 +78,7 @@ public class signUpController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = this.tokenProvider.generateToken(authentication);
+//        String jwt = this.tokenProvider.getUsernameFromToken(authentication);
 
         AuthResponse response = new AuthResponse(jwt, true);
 
@@ -109,4 +105,3 @@ public class signUpController {
         return new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
     }
 }
-

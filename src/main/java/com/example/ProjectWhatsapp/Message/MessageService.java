@@ -9,4 +9,6 @@ public interface MessageService {
     List<Message> getMessagesByChatId(int chatId);
 
     Message sendMessage(MessageDto messageDto);
+
+    Message findMessageByMessageId(int messageId);
 }

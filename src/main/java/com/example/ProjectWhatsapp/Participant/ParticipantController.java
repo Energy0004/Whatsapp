@@ -11,7 +11,7 @@ import java.time.Month;
 import java.util.List;
 
 @RestController
-@RequestMapping("/participant")
+@RequestMapping("/api/participant")
 @AllArgsConstructor
 public class ParticipantController {
     @Autowired
