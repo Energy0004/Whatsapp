@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp;
+package com.example.ProjectWhatsapp.Config;
 
 public class AuthResponse {
 

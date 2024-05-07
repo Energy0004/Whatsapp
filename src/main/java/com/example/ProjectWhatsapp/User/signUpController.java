@@ -1,9 +1,9 @@
 package com.example.ProjectWhatsapp.User;
 
-import com.example.ProjectWhatsapp.AuthResponse;
-import com.example.ProjectWhatsapp.CustomUserService;
-import com.example.ProjectWhatsapp.LoginRequest;
-import com.example.ProjectWhatsapp.TokenProvider;
+import com.example.ProjectWhatsapp.Config.AuthResponse;
+import com.example.ProjectWhatsapp.Config.CustomUserService;
+import com.example.ProjectWhatsapp.Config.LoginRequest;
+import com.example.ProjectWhatsapp.Config.TokenProvider;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

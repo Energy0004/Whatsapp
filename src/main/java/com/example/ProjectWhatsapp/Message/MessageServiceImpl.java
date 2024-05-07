@@ -1,7 +1,6 @@
 package com.example.ProjectWhatsapp.Message;
 
-import com.example.ProjectWhatsapp.Participant.Participant;
-import com.example.ProjectWhatsapp.ResourceNotFoundException;
+import com.example.ProjectWhatsapp.Config.ResourceNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

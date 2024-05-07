@@ -1,7 +1,7 @@
 package com.example.ProjectWhatsapp.User;
 
-import com.example.ProjectWhatsapp.ResourceNotFoundException;
-import com.example.ProjectWhatsapp.TokenProvider;
+import com.example.ProjectWhatsapp.Config.ResourceNotFoundException;
+import com.example.ProjectWhatsapp.Config.TokenProvider;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;

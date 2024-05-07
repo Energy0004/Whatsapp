@@ -3,7 +3,7 @@ package com.example.ProjectWhatsapp.Chat;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantRepository;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
-import com.example.ProjectWhatsapp.ResourceNotFoundException;
+import com.example.ProjectWhatsapp.Config.ResourceNotFoundException;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp;
+package com.example.ProjectWhatsapp.Config;
 
 import java.io.IOException;
 import java.util.List;

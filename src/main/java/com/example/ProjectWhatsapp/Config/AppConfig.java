@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp;
+package com.example.ProjectWhatsapp.Config;
 
 import java.util.Arrays;
 import java.util.Collections;

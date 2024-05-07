@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp;
+package com.example.ProjectWhatsapp.Config;
 
 public class JwtConstant {
     public static final String JWT_HEADER = "Authorization";

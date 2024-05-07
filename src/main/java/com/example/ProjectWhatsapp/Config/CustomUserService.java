@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp;
+package com.example.ProjectWhatsapp.Config;
 
 import java.util.ArrayList;
 import java.util.List;

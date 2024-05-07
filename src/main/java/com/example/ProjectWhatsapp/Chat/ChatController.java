@@ -1,15 +1,12 @@
 package com.example.ProjectWhatsapp.Chat;
 
 import com.example.ProjectWhatsapp.Participant.Participant;
-import com.example.ProjectWhatsapp.Participant.ParticipantService;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
-import com.example.ProjectWhatsapp.TokenProvider;
+import com.example.ProjectWhatsapp.Config.TokenProvider;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserDto;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
-import jakarta.persistence.PostUpdate;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

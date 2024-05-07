@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp;
+package com.example.ProjectWhatsapp.Config;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
