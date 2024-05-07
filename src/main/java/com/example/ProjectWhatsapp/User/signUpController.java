@@ -20,7 +20,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class signUpController {
 //    "http://localhost:8080/api/auth/signup"
 //    "http://localhost:8080/api/auth/signin"
