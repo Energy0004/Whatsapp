@@ -1,7 +1,10 @@
 package com.example.ProjectWhatsapp.Message;
 
 import com.example.ProjectWhatsapp.Config.ResourceNotFoundException;
+import com.example.ProjectWhatsapp.Participant.Participant;
+import com.example.ProjectWhatsapp.Participant.ParticipantRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -9,7 +12,10 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class MessageServiceImpl implements MessageService{
+    @Autowired
     private MessageRepository messageRepository;
+    @Autowired
+    private ParticipantRepository participantRepository;
     @Override
     public MessageDto addMessage(MessageDto messageDto) {
         Message message = new Message();
@@ -41,18 +47,24 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public Message sendMessage(MessageDto messageDto) {
+    public Message sendMessage(Integer chatId, MessageDto messageDto) {
         Message message = new Message();
-        message.setChatId(messageDto.getChatId());
+        message.setChatId(chatId);
         message.setContent(messageDto.getContent());
         message.setTimeStamp(messageDto.getTimeStamp());
         message.setSenderId(messageDto.getSenderId());
         messageRepository.save(message);
         return message;
     }
-
     @Override
     public Message findMessageByMessageId(int messageId) {
         return messageRepository.findById(messageId).orElseThrow(() -> new ResourceNotFoundException("Message not found with id : " + messageId));
+    }
+    @Override
+    public void participantAndChatContains(Integer chatId, Integer userId) throws Exception {
+        Participant participant = participantRepository.findParticipantByUserId(chatId, userId);
+        if(participant == null){
+            throw new Exception("Participant not found");
+        }
     }
 }

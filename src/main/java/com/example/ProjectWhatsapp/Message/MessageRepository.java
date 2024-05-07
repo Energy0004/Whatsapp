@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message, Integer> {
     @Query("SELECT m FROM Message m WHERE m.chatId = ?1 ORDER BY timeStamp")
-    List<Message> getMessagesByChatId( int chatId);
+    List<Message> getMessagesByChatId(int chatId);
 }

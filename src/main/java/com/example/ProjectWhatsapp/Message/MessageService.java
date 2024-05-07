@@ -8,7 +8,8 @@ public interface MessageService {
 
     List<Message> getMessagesByChatId(int chatId);
 
-    Message sendMessage(MessageDto messageDto);
+    Message sendMessage(Integer chatId, MessageDto messageDto);
 
     Message findMessageByMessageId(int messageId);
+    public void participantAndChatContains(Integer chatId, Integer userId) throws Exception;
 }

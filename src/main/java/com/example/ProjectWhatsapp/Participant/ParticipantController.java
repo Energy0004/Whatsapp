@@ -35,14 +35,14 @@ public class ParticipantController {
         return participantRepository.findAll();
 //        return List.of(new Participant(1, 2, 3, LocalDate.of(1, Month.JANUARY, 23)));
     }
-    @PostMapping("/addToGroup")
-    public ResponseEntity<Participant> addParticipant(@RequestBody ParticipantDto participantDto) throws Exception {
+    @PostMapping("/")
+    public ResponseEntity<Participant> addParticipant(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserById(participantDto.getUserId());
         Participant newParticipant = participantService.addParticipantToGroupByUserId(user.getUserId(), participantDto.getChatId());
         return new ResponseEntity<>(newParticipant, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/deleteParticipant")
+    @PostMapping("/delete")
     public ResponseEntity<String> deleteParticipant(@RequestBody ParticipantDto participantDto) throws Exception {
         participantService.deleteParticipant(participantDto.getUserId(), participantDto.getChatId());
         return ResponseEntity.ok("Participant deleted successfully!.");

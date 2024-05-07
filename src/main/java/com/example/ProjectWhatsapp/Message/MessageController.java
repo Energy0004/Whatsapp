@@ -51,21 +51,23 @@ public class MessageController {
 //        messageService.deleteMessage(messageId);
 //        return ResponseEntity.ok("Message deleted successfully!.");
 //    }
-    @PostMapping("/chat")
-    public List<Message> getMessage(@RequestBody ChatDto chatDto) {
-        return messageService.getMessagesByChatId(chatDto.getChatId());
+    @GetMapping("/chat/{chatId}")
+    public List<Message> getMessage(@PathVariable("chatId") Integer chatId, @RequestHeader("Authorization") String jwt) throws Exception {
+        User currentUser = userService.findUserProfile(jwt);
+        messageService.participantAndChatContains(chatId, currentUser.getUserId());
+        return messageService.getMessagesByChatId(chatId);
     }
-    @PostMapping("/send")
-    public ResponseEntity<Message> sendMessage(@RequestBody MessageDto messageDto, @RequestHeader("Authorization") String jwt) throws Exception {
+    @PostMapping("/chat/{chatId}")
+    public ResponseEntity<Message> sendMessage(@PathVariable("chatId") Integer chatId, @RequestBody MessageDto messageDto, @RequestHeader("Authorization") String jwt) throws Exception {
         messageDto.setSenderId(userService.findUserProfile(jwt).getUserId());
         messageDto.setTimeStamp(LocalDate.now());
-        Message saved = messageService.sendMessage(messageDto);
+        Message saved = messageService.sendMessage(chatId, messageDto);
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
-    @DeleteMapping("/cancel/send")
-    public ResponseEntity<String> cancelSendMessage(@RequestBody MessageDto messageDto, @RequestHeader("Authorization") String jwt) throws Exception {
+    @DeleteMapping("/delete/{messageId}")
+    public ResponseEntity<String> cancelSendMessage(@PathVariable("messageId") Integer messageId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
-        Message message = messageService.findMessageByMessageId(messageDto.getMessageId());
+        Message message = messageService.findMessageByMessageId(messageId);
         if(user.getUserId() == message.getSenderId()){
             messageService.deleteMessage(message.getMessageId());
         }else throw new Exception("You can not delete someone's message");

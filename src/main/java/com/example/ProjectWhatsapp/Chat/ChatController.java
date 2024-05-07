@@ -54,18 +54,18 @@ public class ChatController {
         }
         return new ResponseEntity<>(ownerChat, HttpStatus.CREATED);
     }
-    @DeleteMapping("/delete/group")
-    public ResponseEntity<String> deleteGroupChat(@RequestBody ChatDto chatDto){
-        List<Participant> participants = participantService.findAllParticipants(chatDto.getChatId());
+    @DeleteMapping("/delete/group/{chatId}")
+    public ResponseEntity<String> deleteGroupChat(@PathVariable("chatId") Integer chatId){
+        List<Participant> participants = participantService.findAllParticipants(chatId);
         for (Participant participant : participants) {
             participantService.deleteParticipant(participant.getParticipantId());
         }
         return ResponseEntity.ok("Chat deleted successfully!");
     }
-    @DeleteMapping("/leave/group")
-    public ResponseEntity<String> leaveGroupChat(@RequestBody ChatDto chatDto, @RequestHeader("Authorization") String jwt) throws Exception {
+    @DeleteMapping("/leave/group/{chatId}")
+    public ResponseEntity<String> leaveGroupChat(@PathVariable Integer chatId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
-        chatService.leaveGroupChat(chatDto.getChatId(), user.getUserId());
+        chatService.leaveGroupChat(chatId, user.getUserId());
         return ResponseEntity.ok("You left the group");
     }
 }

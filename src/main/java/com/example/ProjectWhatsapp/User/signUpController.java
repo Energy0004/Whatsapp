@@ -1,9 +1,6 @@
 package com.example.ProjectWhatsapp.User;
 
-import com.example.ProjectWhatsapp.Config.AuthResponse;
-import com.example.ProjectWhatsapp.Config.CustomUserService;
-import com.example.ProjectWhatsapp.Config.LoginRequest;
-import com.example.ProjectWhatsapp.Config.TokenProvider;
+import com.example.ProjectWhatsapp.Config.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -68,7 +65,7 @@ public class signUpController {
 //        }
     }
     @PostMapping("/signin")
-    public ResponseEntity<AuthResponse> loginHandler(@RequestBody LoginRequest request) {
+    public ResponseEntity<AuthResponse2> loginHandler(@RequestBody LoginRequest request) {
         String username = request.getUsername();
         String password = request.getPassword();
         System.out.println(username);
@@ -78,12 +75,11 @@ public class signUpController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = this.tokenProvider.generateToken(authentication);
-//        String jwt = this.tokenProvider.getUsernameFromToken(authentication);
+        int userId = this.userRepository.findByUsername(username).getUserId();
 
-        AuthResponse response = new AuthResponse(jwt, true);
+        AuthResponse2 response = new AuthResponse2(jwt, true, username, userId);
 
-        return new ResponseEntity<AuthResponse>(response, HttpStatus.ACCEPTED);
-
+        return new ResponseEntity<AuthResponse2>(response, HttpStatus.ACCEPTED);
     }
 
     public Authentication authenticate(String username, String password) {

@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService{
         User user = this.userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new Exception("User not found with the provided username ");
+            throw new Exception("User not found with the provided username");
         }
         return user;
     }
