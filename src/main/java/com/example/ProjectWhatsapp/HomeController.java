@@ -2,7 +2,9 @@ package com.example.ProjectWhatsapp;
 
 import com.example.ProjectWhatsapp.Chat.Chat;
 import com.example.ProjectWhatsapp.Chat.ChatRepository;
+import com.example.ProjectWhatsapp.Chat.ChatWithLastMessage;
 import com.example.ProjectWhatsapp.Message.Message;
+import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,14 +21,24 @@ public class HomeController {
     private ChatRepository chatRepository;
     @Autowired
     private UserService userService;
-
     @GetMapping
-    public ResponseEntity<List<Chat>> findChatByUserIdHandler(@RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<List<ChatWithLastMessage>> findChatByUserIdHandler(@RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
         System.out.println(user + " %%");
         List<Chat> chats = this.chatRepository.findAllChatByUserId(user.getUserId());
         chats.sort(Comparator.comparing(chat -> getLastSentMessage((Chat) chat).getTimeStamp()).reversed());
-        return new ResponseEntity<>(chats, HttpStatus.OK);
+        List<ChatWithLastMessage> chatWithLastMessages = new ArrayList<>();
+        for (Chat chat : chats) {
+            ChatWithLastMessage chatWithLastMessage = new ChatWithLastMessage();
+            chatWithLastMessage.setChatId(chat.getChatId());
+            chatWithLastMessage.setChatName(chat.getChatName());
+            chatWithLastMessage.setGroupChat(chat.isGroupChat());
+            chatWithLastMessage.setOwnerId(chat.getOwnerId());
+            Message message = getLastSentMessage(chat);
+            chatWithLastMessage.setLastMessage(new MessageLastMessageDto(message.getContent(), message.getTimeStamp()));
+            chatWithLastMessages.add(chatWithLastMessage);
+        }
+        return new ResponseEntity<>(chatWithLastMessages, HttpStatus.OK);
     }
 
     private Message getLastSentMessage(Chat chat) {
@@ -35,6 +47,7 @@ public class HomeController {
             return null;
         }
         messages.sort(Comparator.comparing(Message::getTimeStamp));
+
         return messages.get(messages.size() - 1);
     }
 //    public ResponseEntity<List<Chat>> findChatByUserIdHandler(@RequestHeader("Authorization") String jwt)
