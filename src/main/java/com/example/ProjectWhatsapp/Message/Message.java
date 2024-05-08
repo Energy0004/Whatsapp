@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Setter
@@ -20,11 +21,11 @@ public class Message {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int messageId;
     private String content;
-    private LocalDate timeStamp;
+    private LocalDateTime timeStamp;
     private int senderId;
     private int chatId;
 
-    public Message(String content, LocalDate timeStamp, int senderId, int chatId) {
+    public Message(String content, LocalDateTime timeStamp, int senderId, int chatId) {
         this.content = content;
         this.timeStamp = timeStamp;
         this.senderId = senderId;

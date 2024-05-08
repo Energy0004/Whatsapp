@@ -2,7 +2,6 @@ package com.example.ProjectWhatsapp.Chat;
 
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
-import com.example.ProjectWhatsapp.Config.TokenProvider;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserDto;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
@@ -24,8 +23,6 @@ public class ChatController {
     private ChatService chatService;
     @Autowired
     private UserServiceImpl userService;
-    @Autowired
-    private TokenProvider tokenProvider;
     @Autowired
     private ParticipantServiceImpl participantService;
     @GetMapping
@@ -55,12 +52,17 @@ public class ChatController {
         return new ResponseEntity<>(ownerChat, HttpStatus.CREATED);
     }
     @DeleteMapping("/delete/group/{chatId}")
-    public ResponseEntity<String> deleteGroupChat(@PathVariable("chatId") Integer chatId){
-        List<Participant> participants = participantService.findAllParticipants(chatId);
-        for (Participant participant : participants) {
-            participantService.deleteParticipant(participant.getParticipantId());
+    public ResponseEntity<String> deleteGroupChat(@PathVariable("chatId") Integer chatId, @RequestHeader("Authorization") String jwt) throws Exception {
+        User owner = userService.findUserProfile(jwt);
+        Chat chat = chatService.findChatByChatId(chatId);
+        if(owner.getUserId() == chat.getOwnerId()) {
+            List<Participant> participants = participantService.findAllParticipants(chat.getChatId());
+            for (Participant participant : participants) {
+                participantService.deleteParticipant(participant.getParticipantId());
+            }
+            return ResponseEntity.ok("Chat deleted successfully!");
         }
-        return ResponseEntity.ok("Chat deleted successfully!");
+        throw new Exception("The deletion of the chat is restricted to the owner of the group.");
     }
     @DeleteMapping("/leave/group/{chatId}")
     public ResponseEntity<String> leaveGroupChat(@PathVariable Integer chatId, @RequestHeader("Authorization") String jwt) throws Exception {
@@ -69,7 +71,9 @@ public class ChatController {
         return ResponseEntity.ok("You left the group");
     }
 }
-
-//Zhando eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJEaXBlbiIsImlhdCI6MTcxNDc1NDI1OCwiZXhwIjoxNzE0ODQwNjU4LCJ1c2VybmFtZSI6IlpoYW5kbyJ9.qjAYRwY31YoTW1sHyROz5XTlXZBXjDnMj2G41a4E33DYm93nx9PSsl5EouY7xa0_RJR0SZSgm3ZdZ8RbWk6Aww
-//Arsen eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJEaXBlbiIsImlhdCI6MTcxNDc0MTI3OCwiZXhwIjoxNzE0ODI3Njc4LCJ1c2VybmFtZSI6IkFyc2VuIn0.cp5m6RbPVzJcTTNtuMPXXVz099e7lnuTWANtw7cGq4bBWiEkkmQKVMPKfAe2MeI2EAeyc24TBEvHifLfbxri5g
-//Ars eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJEaXBlbiIsImlhdCI6MTcxNDc1NDYwNywiZXhwIjoxNzE0ODQxMDA3LCJ1c2VybmFtZSI6IkFycyJ9.DOhhZyRozZQzNGmm0vZUVIP6swNuqkjIO_QCmr5vOmpti-HBPysnqYU363Pdw_RFoNA-IT9srAneV6yEYsdEDg
+// Zhando
+// eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJEaXBlbiIsImlhdCI6MTcxNTE2NjUyOCwiZXhwIjoxNzE1MjUyOTI4LCJ1c2VybmFtZSI6IlpoYW5kbyJ9.VKNpSjbEJP3g-JjBst4u4MqKDM-6BwmAsWd6s5K2l_Z7xl4ktfWC7PF1UBaN993jBZZvFkG1Xm9Fvv-4u-Z0bw
+// Arsen
+// eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJEaXBlbiIsImlhdCI6MTcxNTE2NjU0MSwiZXhwIjoxNzE1MjUyOTQxLCJ1c2VybmFtZSI6IkFyc2VuIn0.3TCOP7cyYs8uqAenYlZA22InMfPzbselrc_ecX9kYOqBsEXF9nI6Q7w3bDAsarS_kgGspYt61LOa3pHRfzne_g
+// Ars
+// eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJEaXBlbiIsImlhdCI6MTcxNTE2NjgzMCwiZXhwIjoxNzE1MjUzMjMwLCJ1c2VybmFtZSI6IkFycyJ9.WJf-hTT-zaLCGXCc2azSbU12oEz-0Tf1MTzDq8tM3rXVXrx7OP3U3khoP0PDqfcABXq-B4Qh0KCp60yBc4hV0w

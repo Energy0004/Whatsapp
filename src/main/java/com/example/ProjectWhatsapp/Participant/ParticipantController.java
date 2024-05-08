@@ -36,16 +36,27 @@ public class ParticipantController {
 //        return List.of(new Participant(1, 2, 3, LocalDate.of(1, Month.JANUARY, 23)));
     }
     @PostMapping("/")
-    public ResponseEntity<Participant> addParticipant(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<String> addParticipant(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
+        User owner = userService.findUserProfile(jwt);
+        Chat chat = chatService.findChatByChatId(participantDto.getChatId());
         User user = userService.findUserById(participantDto.getUserId());
-        Participant newParticipant = participantService.addParticipantToGroupByUserId(user.getUserId(), participantDto.getChatId());
-        return new ResponseEntity<>(newParticipant, HttpStatus.CREATED);
+        if(owner.getUserId() == chat.getOwnerId()){
+            participantService.addParticipantToGroupByUserId(user.getUserId(), chat.getChatId());
+            return ResponseEntity.ok("Participant added");
+        }
+        throw new Exception("Adding a new participant is limited to the owner of the group.");
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<String> deleteParticipant(@RequestBody ParticipantDto participantDto) throws Exception {
-        participantService.deleteParticipant(participantDto.getUserId(), participantDto.getChatId());
-        return ResponseEntity.ok("Participant deleted successfully!.");
+    public ResponseEntity<String> deleteParticipant(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
+        User owner = userService.findUserProfile(jwt);
+        Chat chat = chatService.findChatByChatId(participantDto.getChatId());
+        User user = userService.findUserById(participantDto.getUserId());
+        if(owner.getUserId() == chat.getOwnerId()){
+            participantService.deleteParticipant(user.getUserId(), chat.getChatId());
+            return ResponseEntity.ok("Participant removed");
+        }
+        throw new Exception("Removing a participant is limited to the owner of the group.");
 // {
 //     "userId": 653,
 //     "chatId": 2,

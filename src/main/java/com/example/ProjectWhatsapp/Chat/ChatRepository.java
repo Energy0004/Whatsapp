@@ -1,5 +1,6 @@
 package com.example.ProjectWhatsapp.Chat;
 
+import com.example.ProjectWhatsapp.Message.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +16,6 @@ public interface ChatRepository extends JpaRepository<Chat,Integer> {
     public Chat findSingleChatByUserIds(@Param("user") Integer user, @Param("reqUser") Integer reqUser);
     @Query("SELECT c FROM Chat c JOIN Participant p ON c.chatId = p.chatId JOIN User u ON p.userId = u.userId WHERE u.userId = :query")
     public List<Chat> findAllChatByUserId(@Param("query") Integer userId);
+    @Query("select m from Message m where m.chatId = :chatId")
+    public List<Message> getMessages(@Param("chatId") Integer chatId);
 }

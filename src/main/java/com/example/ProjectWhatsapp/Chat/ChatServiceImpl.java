@@ -37,6 +37,7 @@ public class ChatServiceImpl implements ChatService{
         Chat chat = new Chat();
         chat.setChatName(reqUser.getUsername());
         chat.setGroupChat(false);
+        chat.setOwnerId(-1);
         chat = this.chatRepository.save(chat);
 
         Participant participant1 = new Participant();

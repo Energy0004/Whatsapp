@@ -14,7 +14,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -29,12 +28,6 @@ public class signUpController {
     private TokenProvider tokenProvider;
     @Autowired
     private CustomUserService customUserService;
-
-    @GetMapping
-    public List<User> getUsers(){
-        return userRepository.findAll();
-//        return List.of(new User(1, "Alish", "ppp", "993933", LocalDate.of(2000, Month.JANUARY, 5), "acitve"));
-    }
 
     @PostMapping("/signup")
     public ResponseEntity<AuthResponse> signUp(@RequestBody UserDto userDto) throws Exception {
@@ -89,10 +82,6 @@ public class signUpController {
         }
         System.out.println(password);
         System.out.println(userDetails.getPassword());
-//        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-//        String encodedPassword = passwordEncoder.encode(password);
-//        System.out.println(password);
-//        System.out.println(encodedPassword);
         if (!passwordEncoder.matches(password, userDetails.getPassword())) {
             throw new BadCredentialsException("Invalid password");
         }

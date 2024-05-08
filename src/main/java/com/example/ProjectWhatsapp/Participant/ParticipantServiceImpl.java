@@ -31,7 +31,7 @@ public class ParticipantServiceImpl implements ParticipantService{
     }
 
     @Override
-    public Participant addParticipantToGroupByUserId(int userId, int chatId) throws Exception {
+    public void addParticipantToGroupByUserId(int userId, int chatId) throws Exception {
         Participant isParticipant = this.participantRepository.findParticipantByUserId(chatId, userId);
         if(isParticipant != null){
             throw new Exception("Participant already exists");
@@ -41,7 +41,7 @@ public class ParticipantServiceImpl implements ParticipantService{
         participant.setChatId(chatId);
         participant.setJoinedAt(LocalDate.now());
         participantRepository.save(participant);
-        return participant;
+//        return participant;
     }
     @Override
     public void deleteParticipant(int participantId) {
