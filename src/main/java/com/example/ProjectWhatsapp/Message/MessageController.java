@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp.Config.Message;
+package com.example.ProjectWhatsapp.Message;
 
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;

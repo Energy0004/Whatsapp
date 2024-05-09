@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp.Config.Message;
+package com.example.ProjectWhatsapp.Message;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

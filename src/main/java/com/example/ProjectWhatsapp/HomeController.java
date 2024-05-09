@@ -3,11 +3,12 @@ package com.example.ProjectWhatsapp;
 import com.example.ProjectWhatsapp.Chat.Chat;
 import com.example.ProjectWhatsapp.Chat.ChatRepository;
 import com.example.ProjectWhatsapp.Chat.ChatWithLastMessage;
-import com.example.ProjectWhatsapp.Config.Message.Message;
-import com.example.ProjectWhatsapp.Config.Message.MessageLastMessageDto;
+import com.example.ProjectWhatsapp.Message.Message;
+import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantService;
 import com.example.ProjectWhatsapp.User.User;
+import com.example.ProjectWhatsapp.User.UserDto;
 import com.example.ProjectWhatsapp.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class HomeController {
             chatWithLastMessage.setChatName(chat.getChatName());
             chatWithLastMessage.setGroupChat(chat.isGroupChat());
             chatWithLastMessage.setOwnerId(chat.getOwnerId());
-            chatWithLastMessage.setParticipants(getParticipant(chat.getChatId()));
+            chatWithLastMessage.setMembers(getMembers(chat.getChatId()));
             Message message = getLastSentMessage(chat);
             if(message.getContent() != null) {
                 chatWithLastMessage.setLastMessage(new MessageLastMessageDto(message.getContent(), message.getTimeStamp()));
@@ -59,7 +60,16 @@ public class HomeController {
 
         return messages.get(messages.size() - 1);
     }
-    private List<Participant> getParticipant(UUID chatId){
-       return participantService.findAllParticipants(chatId);
+    private List<Member> getMembers(UUID chatId) throws Exception {
+       List<Member> res = new ArrayList<>();
+       List<Participant> participants = participantService.findAllParticipants(chatId);
+        for (Participant p:participants) {
+            UUID id = p.getUserId();
+            Member dto = new Member();
+            dto.setUserId(id);
+            dto.setUsername(userService.findUserById(id).getUsername());
+            res.add(dto);
+        }
+        return res;
     }
 }

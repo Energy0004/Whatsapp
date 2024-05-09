@@ -1,6 +1,6 @@
 package com.example.ProjectWhatsapp.Chat;
 
-import com.example.ProjectWhatsapp.Config.Message.Message;
+import com.example.ProjectWhatsapp.Message.Message;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

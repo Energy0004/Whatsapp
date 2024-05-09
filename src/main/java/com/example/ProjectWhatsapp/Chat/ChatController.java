@@ -78,7 +78,7 @@ public class ChatController {
     public ResponseEntity<UUID> check(@RequestBody List<UserDto> list, @RequestHeader("Authorization") String jwt) throws Exception {
         Chat chat = chatRepository.findSingleChatByUserIds(list.get(0).getUserId(),list.get(1).getUserId());
         if(chat == null){
-            throw new Exception("Chat doesn't exist :" + list.get(0).getUserId() +" | "+list.get(1).getUserId());
+            throw new Exception("Chat doesn't exist : " + list.get(0).getUserId() + " | " + list.get(1).getUserId());
         }
         return new ResponseEntity<>(chat.getChatId(), HttpStatus.CREATED);
     }

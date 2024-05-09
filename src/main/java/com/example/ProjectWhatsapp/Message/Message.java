@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp.Config.Message;
+package com.example.ProjectWhatsapp.Message;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

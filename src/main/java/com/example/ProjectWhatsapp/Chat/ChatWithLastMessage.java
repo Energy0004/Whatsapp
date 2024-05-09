@@ -1,7 +1,8 @@
 package com.example.ProjectWhatsapp.Chat;
 
-import com.example.ProjectWhatsapp.Config.Message.MessageLastMessageDto;
-import com.example.ProjectWhatsapp.Participant.Participant;
+import com.example.ProjectWhatsapp.Member;
+import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
+import com.example.ProjectWhatsapp.User.UserDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -20,5 +21,5 @@ public class ChatWithLastMessage {
     private boolean isGroupChat;
     private UUID ownerId;
     private MessageLastMessageDto lastMessage;
-    private List<Participant> participants;
+    private List<Member> members;
 }
