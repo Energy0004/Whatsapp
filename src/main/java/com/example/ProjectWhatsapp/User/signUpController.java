@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -68,7 +69,7 @@ public class signUpController {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt = this.tokenProvider.generateToken(authentication);
-        int userId = this.userRepository.findByUsername(username).getUserId();
+        UUID userId = this.userRepository.findByUsername(username).getUserId();
 
         AuthResponse2 response = new AuthResponse2(jwt, true, username, userId);
 

@@ -7,15 +7,16 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Setter
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
 public class MessageDto {
-    private int messageId;
+    private UUID messageId;
     private String content;
     private LocalDateTime timeStamp;
-    private int senderId;
-    private int chatId;
+    private UUID senderId;
+    private UUID chatId;
 }

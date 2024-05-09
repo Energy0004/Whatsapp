@@ -5,6 +5,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -14,7 +16,7 @@ import java.util.Objects;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userId;
+    private UUID userId;
     private String username;
     private String password;
     private LocalDate lastLogin;

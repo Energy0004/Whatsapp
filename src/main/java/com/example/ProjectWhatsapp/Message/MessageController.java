@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/message")
@@ -34,20 +35,20 @@ public class MessageController {
 // }
     }
     @GetMapping("/chat/{chatId}")
-    public List<Message> getMessage(@PathVariable("chatId") Integer chatId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public List<Message> getMessage(@PathVariable("chatId") UUID chatId, @RequestHeader("Authorization") String jwt) throws Exception {
         User currentUser = userService.findUserProfile(jwt);
         messageService.participantAndChatContains(chatId, currentUser.getUserId());
         return messageService.getMessagesByChatId(chatId);
     }
     @PostMapping("/chat/{chatId}")
-    public ResponseEntity<Message> sendMessage(@PathVariable("chatId") Integer chatId, @RequestBody MessageDto messageDto, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<Message> sendMessage(@PathVariable("chatId") UUID chatId, @RequestBody MessageDto messageDto, @RequestHeader("Authorization") String jwt) throws Exception {
         messageDto.setSenderId(userService.findUserProfile(jwt).getUserId());
         messageDto.setTimeStamp(LocalDateTime.now());
         Message saved = messageService.sendMessage(chatId, messageDto);
         return new ResponseEntity<>(saved, HttpStatus.OK);
     }
     @DeleteMapping("/delete/{messageId}")
-    public ResponseEntity<String> cancelSendMessage(@PathVariable("messageId") Integer messageId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<String> cancelSendMessage(@PathVariable("messageId") UUID messageId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
         Message message = messageService.findMessageByMessageId(messageId);
         if(user.getUserId() == message.getSenderId()){

@@ -1,8 +1,10 @@
 package com.example.ProjectWhatsapp.User;
 
+import java.util.UUID;
+
 public class UserInfo {
     private String username;
-    private int userId;
+    private UUID userId;
 
     public String getUsername() {
         return username;
@@ -12,15 +14,15 @@ public class UserInfo {
         this.username = username;
     }
 
-    public int getUserId() {
+    public UUID getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
     public UserInfo(){}
-    public UserInfo(String username, int userId) {
+    public UserInfo(String username, UUID userId) {
         this.username = username;
         this.userId = userId;
     }

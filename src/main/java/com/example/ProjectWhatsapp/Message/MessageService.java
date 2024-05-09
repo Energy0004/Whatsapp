@@ -1,15 +1,16 @@
 package com.example.ProjectWhatsapp.Message;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface MessageService {
     MessageDto addMessage(MessageDto messageDto);
-    void deleteMessage(int messageId);
+    void deleteMessage(UUID messageId) throws Exception;
 
-    List<Message> getMessagesByChatId(int chatId);
+    List<Message> getMessagesByChatId(UUID chatId);
 
-    Message sendMessage(Integer chatId, MessageDto messageDto);
+    Message sendMessage(UUID chatId, MessageDto messageDto);
 
-    Message findMessageByMessageId(int messageId);
-    public void participantAndChatContains(Integer chatId, Integer userId) throws Exception;
+    Message findMessageByMessageId(UUID messageId);
+    public void participantAndChatContains(UUID chatId, UUID userId) throws Exception;
 }

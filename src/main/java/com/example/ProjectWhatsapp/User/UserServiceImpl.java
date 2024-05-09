@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class UserServiceImpl implements UserService{
@@ -23,8 +25,8 @@ public class UserServiceImpl implements UserService{
         return user;
     }
     @Override
-    public User findUserById(Integer id) throws Exception {
-        return this.userRepository.findById(id).orElseThrow(() -> new Exception("The user is not found"));
+    public User findUserById(UUID id) throws Exception {
+        return this.userRepository.findByID(id);
     }
     @Override
     public User findUserProfile(String jwt) throws Exception {
@@ -60,8 +62,8 @@ public class UserServiceImpl implements UserService{
         return savedUserDto;
     }
     @Override
-    public void deleteUser(int userId) {
-        User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found with id : " + userId));
-        userRepository.deleteById(userId);
+    public void deleteUser(UUID userId) {
+        User user = userRepository.findByID(userId);
+        userRepository.deleteUserById(userId);
     }
 }

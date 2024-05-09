@@ -8,6 +8,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -18,11 +19,11 @@ import java.util.Objects;
 public class Participant {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int participantId;
-    private int userId;
-    private int chatId;
+    private UUID participantId;
+    private UUID userId;
+    private UUID chatId;
     private LocalDate joinedAt;
-    public Participant(int userId, int chatId, LocalDate joinedAt) {
+    public Participant(UUID userId, UUID chatId, LocalDate joinedAt) {
         this.userId = userId;
         this.chatId = chatId;
         this.joinedAt = joinedAt;

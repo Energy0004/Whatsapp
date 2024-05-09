@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/chat")
@@ -46,13 +47,15 @@ public class ChatController {
         User owner = userService.findUserProfile(jwt);
         Chat ownerChat = chatService.createChatForOwner(owner);
         for (UserDto dto : userDto) {
-            User reqUser = userService.findUserByUsername(dto.getUsername());
-            chatService.addOwnerChat(reqUser, ownerChat.getChatId());
+            try {
+                User reqUser = userService.findUserByUsername(dto.getUsername());
+                chatService.addOwnerChat(reqUser, ownerChat.getChatId());
+            }catch (Exception e){}
         }
         return new ResponseEntity<>(ownerChat, HttpStatus.CREATED);
     }
     @DeleteMapping("/delete/group/{chatId}")
-    public ResponseEntity<String> deleteGroupChat(@PathVariable("chatId") Integer chatId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<String> deleteGroupChat(@PathVariable("chatId") UUID chatId, @RequestHeader("Authorization") String jwt) throws Exception {
         User owner = userService.findUserProfile(jwt);
         Chat chat = chatService.findChatByChatId(chatId);
         if(owner.getUserId() == chat.getOwnerId()) {
@@ -65,7 +68,7 @@ public class ChatController {
         throw new Exception("The deletion of the chat is restricted to the owner of the group.");
     }
     @DeleteMapping("/leave/group/{chatId}")
-    public ResponseEntity<String> leaveGroupChat(@PathVariable Integer chatId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<String> leaveGroupChat(@PathVariable UUID chatId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
         chatService.leaveGroupChat(chatId, user.getUserId());
         return ResponseEntity.ok("You left the group");

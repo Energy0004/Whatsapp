@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -36,18 +37,21 @@ public class MessageServiceImpl implements MessageService{
     }
 
     @Override
-    public void deleteMessage(int messageId) {
-        Message message = messageRepository.findById(messageId).orElseThrow(() -> new ResourceNotFoundException("Message not found with id : " + messageId));
-        messageRepository.deleteById(messageId);
+    public void deleteMessage(UUID messageId) throws Exception {
+        Message message = messageRepository.findMessage(messageId);
+        if(message == null){
+            throw new Exception("Message not found with id :"  + messageId);
+        }
+        messageRepository.deleteByMessageId(messageId);
     }
 
     @Override
-    public List<Message> getMessagesByChatId(int chatId) {
+    public List<Message> getMessagesByChatId(UUID chatId) {
         return messageRepository.getMessagesByChatId(chatId);
     }
 
     @Override
-    public Message sendMessage(Integer chatId, MessageDto messageDto) {
+    public Message sendMessage(UUID chatId, MessageDto messageDto) {
         Message message = new Message();
         message.setChatId(chatId);
         message.setContent(messageDto.getContent());
@@ -57,11 +61,11 @@ public class MessageServiceImpl implements MessageService{
         return message;
     }
     @Override
-    public Message findMessageByMessageId(int messageId) {
-        return messageRepository.findById(messageId).orElseThrow(() -> new ResourceNotFoundException("Message not found with id : " + messageId));
+    public Message findMessageByMessageId(UUID messageId) {
+        return messageRepository.findMessage(messageId);
     }
     @Override
-    public void participantAndChatContains(Integer chatId, Integer userId) throws Exception {
+    public void participantAndChatContains(UUID chatId, UUID userId) throws Exception {
         Participant participant = participantRepository.findParticipantByUserId(chatId, userId);
         if(participant == null){
             throw new Exception("Participant not found");

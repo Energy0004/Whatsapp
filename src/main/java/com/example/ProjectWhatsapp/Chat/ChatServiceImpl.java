@@ -3,7 +3,6 @@ package com.example.ProjectWhatsapp.Chat;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantRepository;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
-import com.example.ProjectWhatsapp.Config.ResourceNotFoundException;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
 import lombok.AllArgsConstructor;
@@ -12,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -25,7 +25,7 @@ public class ChatServiceImpl implements ChatService{
     @Autowired
     private UserServiceImpl userService;
     @Override
-    public Chat createChat(User user, Integer reqUserId) throws Exception {
+    public Chat createChat(User user, UUID reqUserId) throws Exception {
         User reqUser = this.userService.findUserById(reqUserId);
 
         Chat isChatExist = this.chatRepository.findSingleChatByUserIds(user.getUserId(), reqUser.getUserId());
@@ -33,11 +33,10 @@ public class ChatServiceImpl implements ChatService{
         if (isChatExist != null) {
             return isChatExist;
         }
-
         Chat chat = new Chat();
         chat.setChatName(reqUser.getUsername());
         chat.setGroupChat(false);
-        chat.setOwnerId(-1);
+        chat.setOwnerId(null);
         chat = this.chatRepository.save(chat);
 
         Participant participant1 = new Participant();
@@ -56,7 +55,7 @@ public class ChatServiceImpl implements ChatService{
         return chat;
     }
     @Override
-    public void addOwnerChat(User reqUser, Integer ownerChatId) throws Exception {
+    public void addOwnerChat(User reqUser, UUID ownerChatId) throws Exception {
         Participant participant = new Participant();
         participant.setChatId(ownerChatId);
         participant.setUserId(reqUser.getUserId());
@@ -80,7 +79,7 @@ public class ChatServiceImpl implements ChatService{
         return chat;
     }
     @Override
-    public Chat findChatOwner(Integer chatId,Integer id) throws Exception {
+    public Chat findChatOwner(UUID chatId, UUID id) throws Exception {
         Chat chat = this.chatRepository.findChatOwner(chatId,id);
         if(chat == null){
             throw new Exception("Only owner can delete the chat");
@@ -88,12 +87,15 @@ public class ChatServiceImpl implements ChatService{
         return chat;
     }
     @Override
-    public void deleteGroupChat(int chatId) {
-        chatRepository.findById(chatId).orElseThrow(() -> new ResourceNotFoundException("Chat not found with id : " + chatId));
+    public void deleteGroupChat(UUID chatId) throws Exception {
+        Chat a = chatRepository.findByChatId(chatId);
+        if( a == null) {
+            throw new Exception("Chat doesn't exists "+ chatId);
+        }
         chatRepository.deleteById(chatId);
     }
     @Override
-    public void leaveGroupChat(Integer chatId, Integer userId) throws Exception {
+    public void leaveGroupChat(UUID chatId, UUID userId) throws Exception {
         Chat chat = findChatByChatId(chatId);
         List<Participant> p = participantService.findAllParticipants(chatId);
         if(chat.getOwnerId() == userId && p.size() > 1){
@@ -101,10 +103,10 @@ public class ChatServiceImpl implements ChatService{
             chatRepository.save(chat);
         }
         Participant participant = this.participantRepository.findParticipantByUserId(chat.getChatId(), userId);
-        participantRepository.deleteById(participant.getParticipantId());
+        participantRepository.deleteParticipant(participant.getParticipantId());
     }
     @Override
-    public Chat findChatByChatId(Integer chatId) throws Exception {
-        return this.chatRepository.findById(chatId).orElseThrow(() -> new Exception("The chat is not found"));
+    public Chat findChatByChatId(UUID chatId) throws Exception {
+        return this.chatRepository.findByChatId(chatId);
     }
 }

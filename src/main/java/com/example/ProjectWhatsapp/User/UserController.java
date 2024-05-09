@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/user")
 @AllArgsConstructor
@@ -13,13 +15,13 @@ public class UserController {
     @Autowired
     private UserService userService;
     @GetMapping("{userId}")
-    public ResponseEntity<UserInfo> getUser(@PathVariable("userId") Integer userId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<UserInfo> getUser(@PathVariable("userId") UUID userId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserById(userId);
         UserInfo userInfo = new UserInfo(user.getUsername(), userId);
         return new ResponseEntity<>(userInfo, HttpStatus.ACCEPTED);
     }
     @DeleteMapping("{id}")
-    public ResponseEntity<String> deleteUser(@PathVariable("id") int userId){
+    public ResponseEntity<String> deleteUser(@PathVariable("id") UUID userId){
         userService.deleteUser(userId);
         return ResponseEntity.ok("User deleted successfully!.");
     }

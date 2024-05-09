@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -31,7 +32,7 @@ public class ParticipantServiceImpl implements ParticipantService{
     }
 
     @Override
-    public void addParticipantToGroupByUserId(int userId, int chatId) throws Exception {
+    public void addParticipantToGroupByUserId(UUID userId, UUID chatId) throws Exception {
         Participant isParticipant = this.participantRepository.findParticipantByUserId(chatId, userId);
         if(isParticipant != null){
             throw new Exception("Participant already exists");
@@ -44,12 +45,15 @@ public class ParticipantServiceImpl implements ParticipantService{
 //        return participant;
     }
     @Override
-    public void deleteParticipant(int participantId) {
-        Participant participant = participantRepository.findById(participantId).orElseThrow(() -> new ResourceNotFoundException("Participant not found with id : " + participantId));
-        participantRepository.deleteById(participantId);
+    public void deleteParticipant(UUID participantId) throws Exception {
+        Participant participant = participantRepository.findParticipant(participantId);
+        if(participant == null){
+            throw new Exception("Participant not found id :" + participantId);
+        }
+                participantRepository.deleteParticipant(participantId);
     }
     @Override
-    public void deleteParticipant(int userId, int chatId) throws Exception {
+    public void deleteParticipant(UUID userId, UUID chatId) throws Exception {
         Participant participant = this.participantRepository.findParticipantByUserId(chatId, userId);
         if(participant == null){
             throw new Exception("Participant does not exist");
@@ -57,7 +61,7 @@ public class ParticipantServiceImpl implements ParticipantService{
         deleteParticipant(participant.getParticipantId());
     }
     @Override
-    public List<Participant> findAllParticipants(int chatId) {
+    public List<Participant> findAllParticipants(UUID chatId) {
         return participantRepository.findAllByChatId(chatId);
     }
 }

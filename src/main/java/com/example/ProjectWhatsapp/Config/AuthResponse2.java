@@ -1,11 +1,13 @@
 package com.example.ProjectWhatsapp.Config;
 
+import java.util.UUID;
+
 public class AuthResponse2 {
 
     private String jwt;
     private boolean isAuth;
     private String username;
-    private int userId;
+    private UUID userId;
 
     public String getJwt() {
         return jwt;
@@ -28,16 +30,16 @@ public class AuthResponse2 {
     public void setUsername(String username) {
         this.username = username;
     }
-    public int getUserId() {
+    public UUID getUserId() {
         return userId;
     }
-    public void setUserId(int userId) {
+    public void setUserId(UUID userId) {
         this.userId = userId;
     }
 
     public AuthResponse2() {}
 
-    public AuthResponse2(String jwt, boolean isAuth, String username, int userId) {
+    public AuthResponse2(String jwt, boolean isAuth, String username, UUID userId) {
         this.jwt = jwt;
         this.isAuth = isAuth;
         this.username = username;

@@ -7,9 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.rmi.server.UID;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -20,11 +22,11 @@ import java.util.Set;
 public class Chat {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int chatId;
+    private UUID chatId;
     private String chatName;
     private boolean isGroupChat;
-    private int ownerId;
-    public Chat(String chatName, boolean isGroupChat, int ownerId) {
+    private UUID ownerId;
+    public Chat(String chatName, boolean isGroupChat, UUID ownerId) {
         this.chatName = chatName;
         this.isGroupChat = isGroupChat;
         this.ownerId = ownerId;

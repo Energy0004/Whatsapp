@@ -9,6 +9,7 @@ import lombok.Setter;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 @Setter
 @Getter
@@ -19,13 +20,13 @@ import java.util.Objects;
 public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int messageId;
+    private UUID messageId;
     private String content;
     private LocalDateTime timeStamp;
-    private int senderId;
-    private int chatId;
+    private UUID senderId;
+    private UUID chatId;
 
-    public Message(String content, LocalDateTime timeStamp, int senderId, int chatId) {
+    public Message(String content, LocalDateTime timeStamp, UUID senderId, UUID chatId) {
         this.content = content;
         this.timeStamp = timeStamp;
         this.senderId = senderId;

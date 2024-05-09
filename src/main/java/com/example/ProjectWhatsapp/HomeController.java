@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @RestController
@@ -35,27 +36,22 @@ public class HomeController {
             chatWithLastMessage.setGroupChat(chat.isGroupChat());
             chatWithLastMessage.setOwnerId(chat.getOwnerId());
             Message message = getLastSentMessage(chat);
-            chatWithLastMessage.setLastMessage(new MessageLastMessageDto(message.getContent(), message.getTimeStamp()));
+            if(message.getContent() != null) {
+                chatWithLastMessage.setLastMessage(new MessageLastMessageDto(message.getContent(), message.getTimeStamp()));
+            }
             chatWithLastMessages.add(chatWithLastMessage);
         }
         return new ResponseEntity<>(chatWithLastMessages, HttpStatus.OK);
     }
-
     private Message getLastSentMessage(Chat chat) {
         List<Message> messages = this.chatRepository.getMessages(chat.getChatId());
         if (messages.isEmpty()) {
-            return null;
+            Message message = new Message();
+            message.setTimeStamp(LocalDateTime.MIN);
+            return message;
         }
         messages.sort(Comparator.comparing(Message::getTimeStamp));
 
         return messages.get(messages.size() - 1);
     }
-//    public ResponseEntity<List<Chat>> findChatByUserIdHandler(@RequestHeader("Authorization") String jwt)
-//            throws Exception {
-//        User user = userService.findUserProfile(jwt);
-//        System.out.println(user + " %%");
-//        List<Chat> chats = this.chatRepository.findAllChatByUserId(user.getUserId());
-//
-//        return new ResponseEntity<>(chats, HttpStatus.OK);
-//    }
 }
