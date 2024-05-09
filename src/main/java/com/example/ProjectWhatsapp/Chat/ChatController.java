@@ -73,6 +73,15 @@ public class ChatController {
         chatService.leaveGroupChat(chatId, user.getUserId());
         return ResponseEntity.ok("You left the group");
     }
+
+    @PostMapping("/check")
+    public ResponseEntity<UUID> check(@RequestBody List<UserDto> list, @RequestHeader("Authorization") String jwt) throws Exception {
+        Chat chat = chatRepository.findSingleChatByUserIds(list.get(0).getUserId(),list.get(1).getUserId());
+        if(chat == null){
+            throw new Exception("Chat doesn't exist :" + list.get(0).getUserId() +" | "+list.get(1).getUserId());
+        }
+        return new ResponseEntity<>(chat.getChatId(), HttpStatus.CREATED);
+    }
 }
 // Zhando
 // eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJEaXBlbiIsImlhdCI6MTcxNTE2NjUyOCwiZXhwIjoxNzE1MjUyOTI4LCJ1c2VybmFtZSI6IlpoYW5kbyJ9.VKNpSjbEJP3g-JjBst4u4MqKDM-6BwmAsWd6s5K2l_Z7xl4ktfWC7PF1UBaN993jBZZvFkG1Xm9Fvv-4u-Z0bw
