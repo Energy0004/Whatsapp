@@ -5,6 +5,8 @@ import com.example.ProjectWhatsapp.Chat.ChatRepository;
 import com.example.ProjectWhatsapp.Chat.ChatWithLastMessage;
 import com.example.ProjectWhatsapp.Message.Message;
 import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
+import com.example.ProjectWhatsapp.Participant.Participant;
+import com.example.ProjectWhatsapp.Participant.ParticipantService;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,8 @@ public class HomeController {
     private ChatRepository chatRepository;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ParticipantService participantService;
     @GetMapping
     public ResponseEntity<List<ChatWithLastMessage>> findChatByUserIdHandler(@RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
@@ -35,6 +39,7 @@ public class HomeController {
             chatWithLastMessage.setChatName(chat.getChatName());
             chatWithLastMessage.setGroupChat(chat.isGroupChat());
             chatWithLastMessage.setOwnerId(chat.getOwnerId());
+            chatWithLastMessage.setParticipants(getParticipant(chat.getChatId()));
             Message message = getLastSentMessage(chat);
             if(message.getContent() != null) {
                 chatWithLastMessage.setLastMessage(new MessageLastMessageDto(message.getContent(), message.getTimeStamp()));
@@ -53,5 +58,8 @@ public class HomeController {
         messages.sort(Comparator.comparing(Message::getTimeStamp));
 
         return messages.get(messages.size() - 1);
+    }
+    private List<Participant> getParticipant(UUID chatId){
+       return participantService.findAllParticipants(chatId);
     }
 }

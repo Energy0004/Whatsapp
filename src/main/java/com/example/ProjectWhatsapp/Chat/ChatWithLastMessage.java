@@ -1,11 +1,13 @@
 package com.example.ProjectWhatsapp.Chat;
 
 import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
+import com.example.ProjectWhatsapp.Participant.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -18,4 +20,5 @@ public class ChatWithLastMessage {
     private boolean isGroupChat;
     private UUID ownerId;
     private MessageLastMessageDto lastMessage;
+    private List<Participant> participants;
 }
