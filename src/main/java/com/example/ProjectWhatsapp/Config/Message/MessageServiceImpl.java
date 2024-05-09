@@ -1,6 +1,5 @@
-package com.example.ProjectWhatsapp.Message;
+package com.example.ProjectWhatsapp.Config.Message;
 
-import com.example.ProjectWhatsapp.Config.ResourceNotFoundException;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantRepository;
 import lombok.AllArgsConstructor;

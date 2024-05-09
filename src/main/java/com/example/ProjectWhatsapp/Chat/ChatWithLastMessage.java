@@ -1,6 +1,6 @@
 package com.example.ProjectWhatsapp.Chat;
 
-import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
+import com.example.ProjectWhatsapp.Config.Message.MessageLastMessageDto;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

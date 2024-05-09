@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp.Message;
+package com.example.ProjectWhatsapp.Config.Message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

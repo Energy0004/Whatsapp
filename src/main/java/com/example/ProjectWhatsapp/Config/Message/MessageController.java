@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp.Message;
+package com.example.ProjectWhatsapp.Config.Message;
 
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;

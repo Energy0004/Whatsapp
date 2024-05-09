@@ -46,6 +46,11 @@ public class ParticipantController {
         }
         throw new Exception("Adding a new participant is limited to the owner of the group.");
     }
+    @PostMapping("/ByChatId")
+    public ResponseEntity<List<Participant>> find(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
+        return new ResponseEntity<>(participantRepository.findAllByChatId(participantDto.getChatId()),HttpStatus.OK);
+    }
+
 
     @PostMapping("/delete")
     public ResponseEntity<String> deleteParticipant(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
