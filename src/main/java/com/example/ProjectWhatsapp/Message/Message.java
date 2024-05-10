@@ -1,5 +1,6 @@
 package com.example.ProjectWhatsapp.Message;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,6 +25,7 @@ public class Message {
     private LocalDateTime timeStamp;
     private UUID senderId;
     private UUID chatId;
+    private String type;
 
     public Message(String content, LocalDateTime timeStamp, UUID senderId, UUID chatId) {
         this.content = content;

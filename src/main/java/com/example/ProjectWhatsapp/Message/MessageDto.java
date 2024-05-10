@@ -1,5 +1,6 @@
 package com.example.ProjectWhatsapp.Message;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,5 @@ public class MessageDto {
     private LocalDateTime timeStamp;
     private UUID senderId;
     private UUID chatId;
+    private String type;
 }

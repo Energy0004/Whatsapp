@@ -56,6 +56,7 @@ public class MessageServiceImpl implements MessageService{
         message.setContent(messageDto.getContent());
         message.setTimeStamp(messageDto.getTimeStamp());
         message.setSenderId(messageDto.getSenderId());
+        message.setType(messageDto.getType());
         messageRepository.save(message);
         return message;
     }
