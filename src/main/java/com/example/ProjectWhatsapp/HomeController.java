@@ -8,7 +8,6 @@ import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantService;
 import com.example.ProjectWhatsapp.User.User;
-import com.example.ProjectWhatsapp.User.UserDto;
 import com.example.ProjectWhatsapp.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -61,15 +60,15 @@ public class HomeController {
         return messages.get(messages.size() - 1);
     }
     private List<Member> getMembers(UUID chatId) throws Exception {
-       List<Member> res = new ArrayList<>();
+       List<Member> members = new ArrayList<>();
        List<Participant> participants = participantService.findAllParticipants(chatId);
-        for (Participant p:participants) {
-            UUID id = p.getUserId();
-            Member dto = new Member();
-            dto.setUserId(id);
-            dto.setUsername(userService.findUserById(id).getUsername());
-            res.add(dto);
+        for (Participant participant : participants) {
+            UUID userId = participant.getUserId();
+            Member memberDto = new Member();
+            memberDto.setUserId(userId);
+            memberDto.setUsername(userService.findUserById(userId).getUsername());
+            members.add(memberDto);
         }
-        return res;
+        return members;
     }
 }

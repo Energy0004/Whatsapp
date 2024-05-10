@@ -50,8 +50,6 @@ public class ParticipantController {
     public ResponseEntity<List<Participant>> find(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
         return new ResponseEntity<>(participantRepository.findAllByChatId(participantDto.getChatId()),HttpStatus.OK);
     }
-
-
     @PostMapping("/delete")
     public ResponseEntity<String> deleteParticipant(@RequestBody ParticipantDto participantDto, @RequestHeader("Authorization") String jwt) throws Exception {
         User owner = userService.findUserProfile(jwt);

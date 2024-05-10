@@ -30,7 +30,6 @@ public class ChatController {
     public List<Chat> getChat(){
         return chatRepository.findAll();
     }
-
     @PostMapping("/create")
     public ResponseEntity<Chat> createChat(@RequestBody UserDto userDto, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
