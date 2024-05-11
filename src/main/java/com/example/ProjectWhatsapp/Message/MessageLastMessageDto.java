@@ -14,4 +14,5 @@ import java.time.LocalDateTime;
 public class MessageLastMessageDto {
     private String content;
     private LocalDateTime timeStamp;
+    private String type;
 }

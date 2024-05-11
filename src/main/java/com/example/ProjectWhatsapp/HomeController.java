@@ -42,7 +42,7 @@ public class HomeController {
             chatWithLastMessage.setMembers(getMembers(chat.getChatId()));
             Message message = getLastSentMessage(chat);
             if(message.getContent() != null) {
-                chatWithLastMessage.setLastMessage(new MessageLastMessageDto(message.getContent(), message.getTimeStamp()));
+                chatWithLastMessage.setLastMessage(new MessageLastMessageDto(message.getContent(), message.getTimeStamp(), message.getType()));
             }
             chatWithLastMessages.add(chatWithLastMessage);
         }
