@@ -52,6 +52,7 @@ public class MessageServiceImpl implements MessageService{
     @Override
     public Message sendMessage(UUID chatId, MessageDto messageDto) {
         Message message = new Message();
+        if(messageDto.getMessageId() != null)message.setMessageId(messageDto.getMessageId());
         message.setChatId(chatId);
         message.setContent(messageDto.getContent());
         message.setTimeStamp(messageDto.getTimeStamp());
