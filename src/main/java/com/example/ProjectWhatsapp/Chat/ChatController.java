@@ -1,5 +1,6 @@
 package com.example.ProjectWhatsapp.Chat;
 
+import com.example.ProjectWhatsapp.Chat.Dtos.ChatDto;
 import com.example.ProjectWhatsapp.Chat.Dtos.ChatGetInfoDto;
 import com.example.ProjectWhatsapp.Chat.Dtos.GroupChatDto;
 import com.example.ProjectWhatsapp.Member;
@@ -109,6 +110,17 @@ public class ChatController {
             }
         }
         throw new Exception("Required user is not member of the chat");
+    }
+    @PutMapping("rename/{chatId}")
+    public ResponseEntity<Chat> renameGroupChat(@PathVariable("chatId") UUID chatId, @RequestBody ChatDto chatDto, @RequestHeader("Authorization") String jwt) throws Exception {
+        User owner = userService.findUserProfile(jwt);
+        Chat chat = chatService.findChatByChatId(chatId);
+        if(!owner.getUserId().equals(chat.getOwnerId())){
+            throw new Exception("The chat name can only be modified by the owner of the chat.");
+        }
+        chat.setChatName(chatDto.getChatName());
+        chatRepository.save(chat);
+        return new ResponseEntity<>(chat, HttpStatus.OK);
     }
 }
 // Zhando
