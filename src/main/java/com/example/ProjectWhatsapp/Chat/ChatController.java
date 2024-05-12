@@ -73,7 +73,7 @@ public class ChatController {
     public ResponseEntity<String> deleteGroupChat(@PathVariable("chatId") UUID chatId, @RequestHeader("Authorization") String jwt) throws Exception {
         User owner = userService.findUserProfile(jwt);
         Chat chat = chatService.findChatByChatId(chatId);
-        if(owner.getUserId() == chat.getOwnerId()) {
+        if(owner.getUserId().equals(chat.getOwnerId())) {
             List<Participant> participants = participantService.findAllParticipants(chat.getChatId());
             for (Participant participant : participants) {
                 participantService.deleteParticipant(participant.getParticipantId());

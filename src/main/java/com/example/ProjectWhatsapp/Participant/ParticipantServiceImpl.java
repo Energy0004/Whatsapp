@@ -1,6 +1,7 @@
 package com.example.ProjectWhatsapp.Participant;
 
 import com.example.ProjectWhatsapp.Config.ResourceNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class ParticipantServiceImpl implements ParticipantService{
     @Autowired
     private ParticipantRepository participantRepository;
@@ -50,7 +52,7 @@ public class ParticipantServiceImpl implements ParticipantService{
         if(participant == null){
             throw new Exception("Participant not found id :" + participantId);
         }
-                participantRepository.deleteParticipant(participantId);
+        participantRepository.deleteParticipant(participantId);
     }
     @Override
     public void deleteParticipant(UUID userId, UUID chatId) throws Exception {

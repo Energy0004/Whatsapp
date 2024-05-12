@@ -2,6 +2,7 @@ package com.example.ProjectWhatsapp.Chat;
 
 import com.example.ProjectWhatsapp.User.User;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

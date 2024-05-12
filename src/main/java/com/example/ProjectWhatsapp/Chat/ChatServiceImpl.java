@@ -5,6 +5,7 @@ import com.example.ProjectWhatsapp.Participant.ParticipantRepository;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class ChatServiceImpl implements ChatService{
     @Autowired
     private ParticipantServiceImpl participantService;
@@ -98,7 +100,7 @@ public class ChatServiceImpl implements ChatService{
     public void leaveGroupChat(UUID chatId, UUID userId) throws Exception {
         Chat chat = findChatByChatId(chatId);
         List<Participant> p = participantService.findAllParticipants(chatId);
-        if(chat.getOwnerId() == userId && p.size() > 1){
+        if(chat.getOwnerId().equals(userId) && p.size() > 1){
             chat.setOwnerId(p.get(1).getUserId());
             chatRepository.save(chat);
         }

@@ -1,6 +1,7 @@
 package com.example.ProjectWhatsapp.Participant;
 
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
