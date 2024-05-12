@@ -2,7 +2,7 @@ package com.example.ProjectWhatsapp;
 
 import com.example.ProjectWhatsapp.Chat.Chat;
 import com.example.ProjectWhatsapp.Chat.ChatRepository;
-import com.example.ProjectWhatsapp.Chat.ChatWithLastMessage;
+import com.example.ProjectWhatsapp.Chat.Dtos.ChatWithLastMessage;
 import com.example.ProjectWhatsapp.Message.Message;
 import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
 import com.example.ProjectWhatsapp.Participant.Participant;

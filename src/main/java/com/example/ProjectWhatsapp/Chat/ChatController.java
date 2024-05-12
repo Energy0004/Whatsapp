@@ -1,5 +1,7 @@
 package com.example.ProjectWhatsapp.Chat;
 
+import com.example.ProjectWhatsapp.Chat.Dtos.ChatGetInfoDto;
+import com.example.ProjectWhatsapp.Chat.Dtos.GroupChatDto;
 import com.example.ProjectWhatsapp.Member;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
@@ -7,7 +9,6 @@ import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserDto;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,13 +58,13 @@ public class ChatController {
 // }
     }
     @PostMapping("/create/group")
-    public ResponseEntity<Chat> createGroupChat(@RequestBody List<UserDto> userDto, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<Chat> createGroupChat(@RequestBody GroupChatDto chatDto, @RequestHeader("Authorization") String jwt) throws Exception {
         User owner = userService.findUserProfile(jwt);
-        Chat ownerChat = chatService.createChatForOwner(owner);
-        for (UserDto dto : userDto) {
+        Chat ownerChat = chatService.createChatForOwner(chatDto.getChatName(), owner);
+        for (UserDto dto : chatDto.getMembers()) {
             try {
-                User reqUser = userService.findUserByUsername(dto.getUsername());
-                chatService.addOwnerChat(reqUser, ownerChat.getChatId());
+                User reqUser = userService.findUserById(dto.getUserId());
+                chatService.addOwnerChat(reqUser.getUserId(), ownerChat.getChatId());
             }catch (Exception e){}
         }
         return new ResponseEntity<>(ownerChat, HttpStatus.CREATED);

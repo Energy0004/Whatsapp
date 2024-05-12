@@ -1,4 +1,4 @@
-package com.example.ProjectWhatsapp.Chat;
+package com.example.ProjectWhatsapp.Chat.Dtos;
 
 import com.example.ProjectWhatsapp.User.User;
 import lombok.AllArgsConstructor;

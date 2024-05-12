@@ -1,5 +1,6 @@
-package com.example.ProjectWhatsapp.Chat;
+package com.example.ProjectWhatsapp.Chat.Dtos;
 
+import com.example.ProjectWhatsapp.Chat.Chat;
 import com.example.ProjectWhatsapp.Member;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.User.User;

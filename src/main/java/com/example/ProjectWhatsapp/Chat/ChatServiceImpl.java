@@ -55,18 +55,18 @@ public class ChatServiceImpl implements ChatService{
         return chat;
     }
     @Override
-    public void addOwnerChat(User reqUser, UUID ownerChatId) throws Exception {
+    public void addOwnerChat(UUID reqUserId, UUID ownerChatId) throws Exception {
         Participant participant = new Participant();
         participant.setChatId(ownerChatId);
-        participant.setUserId(reqUser.getUserId());
+        participant.setUserId(reqUserId);
         participant.setJoinedAt(LocalDate.now());
         this.participantRepository.save(participant);
     }
 
     @Override
-    public Chat createChatForOwner(User owner) {
+    public Chat createChatForOwner(String chatName, User owner) {
         Chat chat = new Chat();
-        chat.setChatName("Owner: " + owner.getUsername());
+        chat.setChatName(chatName);
         chat.setGroupChat(true);
         chat.setOwnerId(owner.getUserId());
         this.chatRepository.save(chat);

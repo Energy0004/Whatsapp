@@ -9,7 +9,7 @@ public interface ChatService {
     void deleteGroupChat(UUID chatId) throws Exception;
     public void leaveGroupChat(UUID chatId, UUID userId) throws Exception;
     public Chat findChatByChatId(UUID chatId) throws Exception;
-    public void addOwnerChat(User toAdduser, UUID chatId) throws Exception;
-    public Chat createChatForOwner(User owner);
+    public void addOwnerChat(UUID reqUserId, UUID chatId) throws Exception;
+    public Chat createChatForOwner(String chatName, User owner);
     public Chat findChatOwner(UUID chatId,UUID id) throws Exception;
 }

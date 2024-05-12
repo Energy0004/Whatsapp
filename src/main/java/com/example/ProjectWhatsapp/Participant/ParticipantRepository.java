@@ -12,8 +12,8 @@ public interface ParticipantRepository extends JpaRepository<Participant,Integer
     public Participant findParticipantByUserId(@Param("chatId") UUID chatId, @Param("userId") UUID userId);
     @Query("select p from Participant p where p.chatId = :chatId")
     public List<Participant> findAllByChatId(@Param("chatId") UUID chatId);
-    @Query("DELETE FROM Participant c WHERE c.participantId = ?1")
-    public void deleteParticipant(UUID participantId);
+    @Query("DELETE FROM Participant c WHERE c.participantId = :participantId")
+    public void deleteParticipant(@Param("participantId") UUID participantId);
     @Query("select p from Participant p where p.participantId = ?1")
     public Participant findParticipant(UUID participantId);
 }
