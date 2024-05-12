@@ -1,16 +1,19 @@
 package com.example.ProjectWhatsapp.Chat;
 
+import com.example.ProjectWhatsapp.Member;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserDto;
 import com.example.ProjectWhatsapp.User.UserServiceImpl;
 import lombok.AllArgsConstructor;
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,9 +29,21 @@ public class ChatController {
     private UserServiceImpl userService;
     @Autowired
     private ParticipantServiceImpl participantService;
-    @GetMapping
-    public List<Chat> getChat(){
-        return chatRepository.findAll();
+    @GetMapping("{chatId}")
+    public ResponseEntity<ChatGetInfoDto> getChatInfo(@PathVariable UUID chatId, @RequestHeader("Authorization") String jwt) throws Exception {
+        Chat chat = chatService.findChatByChatId(chatId);
+        List<Participant> participants = participantService.findAllParticipants(chat.getChatId());
+        List<Member> members = new ArrayList<>();
+        for (Participant participant : participants) {
+            User user = userService.findUserById(participant.getUserId());
+            Member member = new Member();
+            member.setUserId(user.getUserId());
+            member.setUsername(user.getUsername());
+            members.add(member);
+        }
+        ChatGetInfoDto chatGetInfoDto = new ChatGetInfoDto(chat);
+        chatGetInfoDto.setMembers(members);
+        return new ResponseEntity<>(chatGetInfoDto, HttpStatus.OK);
     }
     @PostMapping("/create")
     public ResponseEntity<Chat> createChat(@RequestBody UserDto userDto, @RequestHeader("Authorization") String jwt) throws Exception {
@@ -67,7 +82,7 @@ public class ChatController {
         throw new Exception("The deletion of the chat is restricted to the owner of the group.");
     }
     @DeleteMapping("/leave/group/{chatId}")
-    public ResponseEntity<String> leaveGroupChat(@PathVariable UUID chatId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<String> leaveGroupChat(@PathVariable("chatId") UUID chatId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
         chatService.leaveGroupChat(chatId, user.getUserId());
         return ResponseEntity.ok("You left the group");
@@ -80,6 +95,19 @@ public class ChatController {
             throw new Exception("Chat doesn't exist : " + list.get(0).getUserId() + " | " + list.get(1).getUserId());
         }
         return new ResponseEntity<>(chat.getChatId(), HttpStatus.CREATED);
+    }
+    @PostMapping("group/{chatId}")
+    public ResponseEntity<Participant> checkGroup(@PathVariable("chatId") UUID chatId, @RequestBody UserDto userDto, @RequestHeader("Authorization") String jwt) throws Exception {
+        Chat chat = chatService.findChatByChatId(chatId);
+        User user = userService.findUserById(userDto.getUserId());
+        UUID userId = user.getUserId();
+        List<Participant> participants = participantService.findAllParticipants(chat.getChatId());
+        for (Participant participant : participants) {
+            if(participant.getUserId().equals(userId)){
+                return new ResponseEntity<>(participant, HttpStatus.OK);
+            }
+        }
+        throw new Exception("Required user is not member of the chat");
     }
 }
 // Zhando
