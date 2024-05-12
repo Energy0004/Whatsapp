@@ -111,7 +111,7 @@ public class ChatController {
         }
         throw new Exception("Required user is not member of the chat");
     }
-    @PutMapping("rename/{chatId}")
+    @PutMapping("{chatId}")
     public ResponseEntity<Chat> renameGroupChat(@PathVariable("chatId") UUID chatId, @RequestBody ChatDto chatDto, @RequestHeader("Authorization") String jwt) throws Exception {
         User owner = userService.findUserProfile(jwt);
         Chat chat = chatService.findChatByChatId(chatId);
