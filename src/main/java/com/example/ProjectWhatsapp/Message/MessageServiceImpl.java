@@ -2,6 +2,7 @@ package com.example.ProjectWhatsapp.Message;
 
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +12,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class MessageServiceImpl implements MessageService{
     @Autowired
     private MessageRepository messageRepository;

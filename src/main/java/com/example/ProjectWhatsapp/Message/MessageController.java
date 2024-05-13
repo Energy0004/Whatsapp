@@ -50,9 +50,10 @@ public class MessageController {
     public ResponseEntity<String> cancelSendMessage(@PathVariable("messageId") UUID messageId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserProfile(jwt);
         Message message = messageService.findMessageByMessageId(messageId);
-        if(user.getUserId() == message.getSenderId()){
+        if(user.getUserId().equals(message.getSenderId())){
             messageService.deleteMessage(message.getMessageId());
         }else throw new Exception("You can not delete someone's message");
         return new ResponseEntity<>("Message deleted successfully!", HttpStatus.OK);
     }
+//    Alish sushka
 }
