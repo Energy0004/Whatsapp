@@ -1,9 +1,7 @@
 package com.example.ProjectWhatsapp.Chat.Dtos;
 
 import com.example.ProjectWhatsapp.Chat.Chat;
-import com.example.ProjectWhatsapp.Member;
-import com.example.ProjectWhatsapp.Participant.Participant;
-import com.example.ProjectWhatsapp.User.User;
+import com.example.ProjectWhatsapp.User.Member;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

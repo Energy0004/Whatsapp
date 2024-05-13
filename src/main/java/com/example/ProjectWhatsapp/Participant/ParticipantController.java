@@ -34,7 +34,7 @@ public class ParticipantController {
         User owner = userService.findUserProfile(jwt);
         Chat chat = chatService.findChatByChatId(participantDto.getChatId());
         User user = userService.findUserById(participantDto.getUserId());
-        if(owner.getUserId() == chat.getOwnerId()){
+        if(owner.getUserId().equals(chat.getOwnerId())){
             participantService.addParticipantToGroupByUserId(user.getUserId(), chat.getChatId());
             return ResponseEntity.ok("Participant added");
         }
@@ -49,7 +49,7 @@ public class ParticipantController {
         User owner = userService.findUserProfile(jwt);
         Chat chat = chatService.findChatByChatId(participantDto.getChatId());
         User user = userService.findUserById(participantDto.getUserId());
-        if(owner.getUserId() == chat.getOwnerId()){
+        if(owner.getUserId().equals(chat.getOwnerId())){
             participantService.deleteParticipant(user.getUserId(), chat.getChatId());
             return ResponseEntity.ok("Participant removed");
         }

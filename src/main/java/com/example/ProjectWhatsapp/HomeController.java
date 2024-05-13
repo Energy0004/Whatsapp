@@ -7,6 +7,7 @@ import com.example.ProjectWhatsapp.Message.Message;
 import com.example.ProjectWhatsapp.Message.MessageLastMessageDto;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantService;
+import com.example.ProjectWhatsapp.User.Member;
 import com.example.ProjectWhatsapp.User.User;
 import com.example.ProjectWhatsapp.User.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

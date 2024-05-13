@@ -3,7 +3,7 @@ package com.example.ProjectWhatsapp.Chat;
 import com.example.ProjectWhatsapp.Chat.Dtos.ChatDto;
 import com.example.ProjectWhatsapp.Chat.Dtos.ChatGetInfoDto;
 import com.example.ProjectWhatsapp.Chat.Dtos.GroupChatDto;
-import com.example.ProjectWhatsapp.Member;
+import com.example.ProjectWhatsapp.User.Member;
 import com.example.ProjectWhatsapp.Participant.Participant;
 import com.example.ProjectWhatsapp.Participant.ParticipantServiceImpl;
 import com.example.ProjectWhatsapp.User.User;

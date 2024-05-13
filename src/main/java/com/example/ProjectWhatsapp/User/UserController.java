@@ -15,9 +15,9 @@ public class UserController {
     @Autowired
     private UserService userService;
     @GetMapping("{userId}")
-    public ResponseEntity<UserInfo> getUser(@PathVariable("userId") UUID userId, @RequestHeader("Authorization") String jwt) throws Exception {
+    public ResponseEntity<Member> getUser(@PathVariable("userId") UUID userId, @RequestHeader("Authorization") String jwt) throws Exception {
         User user = userService.findUserById(userId);
-        UserInfo userInfo = new UserInfo(user.getUsername(), userId);
+        Member userInfo = new Member(userId, user.getUsername());
         return new ResponseEntity<>(userInfo, HttpStatus.ACCEPTED);
     }
     @DeleteMapping("{id}")
